@@ -2,23 +2,11 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import { useAuth } from "./context/AuthContext";
 import AuthPage from "./pages/AuthPage";
+import DashboardPage from "./pages/DashboardPage";
 
 function ProtectedRoute({ children }) {
   const { token } = useAuth();
   return token ? children : <Navigate to="/login" replace />;
-}
-
-function Dashboard() {
-  const { user } = useAuth();
-
-  return (
-    <main className="container py-5">
-      <h1>Dashboard</h1>
-      <p className="text-body-secondary">
-        Üdvözöljük, {user?.name}. A weboldal-monitorozási felület helye.
-      </p>
-    </main>
-  );
 }
 
 export default function App() {
@@ -30,7 +18,7 @@ export default function App() {
           path="/"
           element={
             <ProtectedRoute>
-              <Dashboard />
+              <DashboardPage />
             </ProtectedRoute>
           }
         />
