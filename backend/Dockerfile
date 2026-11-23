@@ -9,6 +9,7 @@ COPY src ./src
 
 COPY prisma ./prisma
 RUN npx prisma generate
+COPY swagger.json ./
 
 EXPOSE 5000
 
