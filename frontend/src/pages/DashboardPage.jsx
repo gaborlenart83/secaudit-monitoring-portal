@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 const API_URL = (import.meta.env.VITE_API_URL || "http://localhost:5000/api").replace(/\/$/, "");
@@ -251,6 +252,9 @@ export default function DashboardPage() {
                     )}
 
                     <div className="d-flex gap-2 mt-auto">
+                      <Link className="btn btn-outline-secondary btn-sm" to={`/sites/${site.id}`}>
+                        Részletek
+                      </Link>
                       <button
                         className="btn btn-primary btn-sm flex-grow-1"
                         type="button"

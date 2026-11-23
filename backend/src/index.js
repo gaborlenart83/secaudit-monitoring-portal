@@ -4,6 +4,7 @@ const cors = require("cors");
 const express = require("express");
 const authRoutes = require("./routes/authRoutes");
 const siteRoutes = require("./routes/siteRoutes");
+const incidentRoutes = require("./routes/incidentRoutes");
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -17,6 +18,7 @@ app.get("/api/health", (_req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/sites", siteRoutes);
+app.use("/api/incidents", incidentRoutes);
 
 if (require.main === module) {
   app.listen(port, "0.0.0.0", () => {
