@@ -7,6 +7,9 @@ RUN npm ci
 
 COPY src ./src
 
+COPY prisma ./prisma
+RUN npx prisma generate
+
 EXPOSE 5000
 
 CMD ["npm", "run", "dev"]
