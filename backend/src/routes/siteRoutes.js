@@ -66,6 +66,44 @@ router.post('/', async (req, res) => {
   }
 });
 
+router.get('/:id/history', async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    if (!Number.isInteger(id) || id <= 0) {
+      return res.status(400).json({ error: 'Invalid site id' });
+    }
+
+    const site = await prisma.monitoredSite.findUnique({
+      where: { id },
+      include: {
+        scans: {
+          orderBy: { scannedAt: 'desc' },
+        },
+        incidents: {
+          orderBy: { createdAt: 'desc' },
+        },
+      },
+    });
+
+    if (!site) {
+      return res.status(404).json({ error: 'Site not found' });
+    }
+    if (site.userId !== req.user.id && req.user.role !== 'ADMIN') {
+      return res.status(403).json({ error: 'Forbidden' });
+    }
+
+    const { scans, incidents, ...siteData } = site;
+    return res.json({
+      site: siteData,
+      scans,
+      incidents,
+    });
+  } catch (error) {
+    console.error('Failed to get site history:', error);
+    return res.status(500).json({ error: 'Failed to get site history' });
+  }
+});
+
 router.delete('/:id', async (req, res) => {
   try {
     const id = Number(req.params.id);

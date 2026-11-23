@@ -3,6 +3,7 @@ import Navbar from "./components/Navbar";
 import { useAuth } from "./context/AuthContext";
 import AuthPage from "./pages/AuthPage";
 import DashboardPage from "./pages/DashboardPage";
+import SiteDetailsPage from "./pages/SiteDetailsPage";
 
 function ProtectedRoute({ children }) {
   const { token } = useAuth();
@@ -19,6 +20,14 @@ export default function App() {
           element={
             <ProtectedRoute>
               <DashboardPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/sites/:id"
+          element={
+            <ProtectedRoute>
+              <SiteDetailsPage />
             </ProtectedRoute>
           }
         />
