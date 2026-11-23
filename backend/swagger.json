@@ -1,0 +1,154 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "SecAudit API",
+    "version": "1.0.0",
+    "description": "SecAudit monitoring portal REST API"
+  },
+  "servers": [
+    { "url": "/api" }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    { "bearerAuth": [] }
+  ],
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "security": [],
+        "summary": "Register a user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email", "password", "name"],
+                "properties": {
+                  "email": { "type": "string", "format": "email" },
+                  "password": { "type": "string", "minLength": 8 },
+                  "name": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Created" },
+          "400": { "description": "Invalid input" },
+          "409": { "description": "Email already in use" }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "security": [],
+        "summary": "Login",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email", "password"],
+                "properties": {
+                  "email": { "type": "string", "format": "email" },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Token and user" },
+          "400": { "description": "Missing credentials" },
+          "401": { "description": "Invalid credentials" }
+        }
+      }
+    },
+    "/sites": {
+      "get": {
+        "tags": ["Sites"],
+        "summary": "List accessible sites",
+        "responses": { "200": { "description": "Site list" }, "401": { "description": "Unauthorized" } }
+      },
+      "post": {
+        "tags": ["Sites"],
+        "summary": "Create a monitored site",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name", "url"],
+                "properties": {
+                  "name": { "type": "string" },
+                  "url": { "type": "string", "format": "uri" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "201": { "description": "Created" }, "400": { "description": "Invalid or blocked URL" } }
+      }
+    },
+    "/sites/{id}": {
+      "delete": {
+        "tags": ["Sites"],
+        "summary": "Delete an owned site",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "responses": { "200": { "description": "Deleted" }, "403": { "description": "Forbidden" }, "404": { "description": "Not found" } }
+      }
+    },
+    "/sites/{id}/history": {
+      "get": {
+        "tags": ["Sites"],
+        "summary": "Get site history",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "responses": { "200": { "description": "Site, scans and incidents" }, "403": { "description": "Forbidden" }, "404": { "description": "Not found" } }
+      }
+    },
+    "/sites/{id}/scan": {
+      "post": {
+        "tags": ["Sites"],
+        "summary": "Scan a site",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "responses": { "201": { "description": "Scan and optional incident" }, "400": { "description": "Blocked URL" }, "403": { "description": "Forbidden" } }
+      }
+    },
+    "/incidents/{id}/resolve": {
+      "patch": {
+        "tags": ["Incidents"],
+        "summary": "Resolve an incident",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "responses": { "200": { "description": "Updated incident" }, "403": { "description": "Forbidden" }, "404": { "description": "Not found" } }
+      }
+    },
+    "/admin/overview": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "Get system overview",
+        "responses": { "200": { "description": "System statistics" }, "403": { "description": "Forbidden" } }
+      }
+    },
+    "/admin/sites/{id}": {
+      "delete": {
+        "tags": ["Admin"],
+        "summary": "Delete any monitored site",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "responses": { "200": { "description": "Deleted" }, "403": { "description": "Forbidden" }, "404": { "description": "Not found" } }
+      }
+    }
+  }
+}

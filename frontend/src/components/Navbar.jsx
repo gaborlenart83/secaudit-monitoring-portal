@@ -33,6 +33,11 @@ export default function Navbar() {
           <div className="ms-auto d-flex align-items-center gap-3">
             {user ? (
               <>
+                {user.role === "ADMIN" && (
+                  <Link className="btn btn-outline-warning btn-sm" to="/admin">
+                    Admin Műszerfal
+                  </Link>
+                )}
                 <span className="text-light">{user.name}</span>
                 <span className="badge bg-primary">{user.role}</span>
                 <button className="btn btn-outline-light btn-sm" type="button" onClick={handleLogout}>
