@@ -65,3 +65,12 @@ erDiagram
    - Frontend: `http://localhost:3000`
    - Backend API: `http://localhost:5000`
    - Swagger dokumentáció: `http://localhost:5000/api-docs`
+
+## Éles környezet (Oracle Cloud VPS)
+
+- **Webalkalmazás (Frontend):** http://92.5.47.41:3000
+- **API dokumentáció (Swagger UI):** http://92.5.47.41:5000/api-docs
+
+### Demó hozzáférések (seedelt fiókok)
+- **Admin:** `admin@secaudit.hu` / `Admin123!`
+- **Felhasználó:** `user@secaudit.hu` (a `prisma/seed.js`-ben megadott jelszóval)
